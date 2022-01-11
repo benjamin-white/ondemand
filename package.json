@@ -1,5 +1,5 @@
 {
-  "name": "hello-next",
+  "name": "ondemand",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -11,15 +11,23 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@hapi/iron": "^6.0.0",
+    "@prisma/client": "^3.6.0",
+    "cookie": "^0.4.1",
     "next": "9.5.5",
+    "next-connect": "^0.11.0",
+    "passport": "^0.5.0",
+    "passport-local": "^1.0.0",
     "react": "16.14.0",
     "react-dom": "16.14.0",
-    "react-markdown": "5.0.2"
+    "react-markdown": "5.0.2",
+    "swr": "^1.1.0",
+    "uuidv4": "^6.2.12"
   },
   "devDependencies": {
-    "@types/next-auth": "3.1.14",
     "@types/node": "14.14.6",
     "@types/react": "16.9.56",
+    "prisma": "3.6.0",
     "typescript": "4.0.5"
   }
 }

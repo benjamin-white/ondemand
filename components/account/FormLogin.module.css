@@ -1,0 +1,35 @@
+.form {
+
+  display: flex;
+  align-items: center;
+
+}
+
+.form label {
+
+  font-size: 0;
+  opacity: 0;
+  position: absolute;
+
+}
+
+.form input {
+
+  font-size: 14px;
+  padding: .25em .5em;
+}
+
+.form input[type="email"],
+.form input[type="password"] {
+
+  max-width: 150px;
+  margin-left: 1rem;
+
+}
+
+.form input[type="submit"] {
+
+  margin-left: 1rem;
+  text-transform: uppercase;
+
+}

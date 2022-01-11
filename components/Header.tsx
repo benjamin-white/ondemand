@@ -1,56 +1,40 @@
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import React, { useState } from 'react'
+import Link                from 'next/link'
+import { useRouter }       from 'next/router'
+import FormLogin           from './account/FormLogin'
+import ButtonLogout        from './account/ButtonLogout'
+import styles              from './Header.module.css'
+// import { userInfo }        from 'os'
 
-const Header: React.FC = () => {
+type User = {
+  name: string
+}
+
+type props = {
+  user: User
+}
+
+const Header: React.FC<props> = ({ user }) => {
+
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  let left = (
-    <div className="left">
-      <Link href="/">
-        <a className="bold" data-active={isActive("/")}>
-          Feed
-        </a>
-      </Link>
-      <style jsx>{`
-        .bold {
-          font-weight: bold;
-        }
-
-        a {
-          text-decoration: none;
-          color: #000;
-          display: inline-block;
-        }
-
-        .left a[data-active="true"] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-      `}</style>
-    </div>
-  );
-
-  let right = null;
+  const [currentUser, setCurrentUser] = useState(user.name)
 
   return (
-    <nav>
-      {left}
-      {right}
-      <style jsx>{`
-        nav {
-          display: flex;
-          padding: 2rem;
-          align-items: center;
-        }
-      `}</style>
+    <nav className={styles.header}>
+      <div>
+        <Link href="/">
+          <a data-active={isActive("/")} className={isActive('/') ? styles.disabled : ''}>Home</a>
+        </Link>
+        <Link href="/account">
+          <a data-active={isActive("/account")} className={isActive('/account') ? styles.disabled : ''}>Account</a>
+        </Link>
+      </div>
+      {!currentUser ? <FormLogin callback={setCurrentUser.bind(null, true)} /> : <p>{currentUser}, <ButtonLogout callback={setCurrentUser.bind(null, false)} /></p>}
     </nav>
   );
 };
 
-export default Header;
+export default Header

@@ -1,0 +1,50 @@
+.header {
+
+  align-items: center;
+  background: navy;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+
+}
+
+.header a {
+
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity .5s ease-out, color .5s ease-out;
+
+}
+
+.header a:hover {
+
+  color: orange;
+
+}
+
+.header > div:first-child a {
+
+  margin-left: 0.75rem;
+
+}
+
+.header > div:first-child a:first-child {
+
+  margin-left: 0;
+
+}
+
+.header p {
+
+  margin: 0;
+
+}
+
+.header .disabled {
+
+  opacity: .6;
+  pointer-events: none;
+
+}

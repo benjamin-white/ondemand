@@ -1,57 +1,61 @@
-import React from "react"
-import { GetStaticProps } from "next"
-import Layout from "../components/Layout"
-import Post, { PostProps } from "../components/Post"
+import React                  from 'react'
+import { GetServerSideProps } from 'next'
+import { getLoginSession }    from '../inc/session'
+import Layout                 from '../components/Layout'
+import Post, { PostProps }    from '../components/Post'
+import prisma                 from '../inc/prisma'
 
-export const getStaticProps: GetStaticProps = async () => {
-  const feed = [
-    {
-      id: 1,
-      title: "Prisma is the perfect ORM for Next.js",
-      content: "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
-      published: false,
-      author: {
-        name: "Nikolas Burk",
-        email: "burk@prisma.io",
-      },
-    },
-  ]
-  return { props: { feed } }
+type User = {
+  name: string
 }
 
 type Props = {
-  feed: PostProps[]
+  feedData: PostProps[],
+  currentUser: User
 }
 
-const Blog: React.FC<Props> = (props) => {
-  return (
-    <Layout>
-      <div className="page">
-        <h1>Public Feed</h1>
-        <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
-      </div>
-      <style jsx>{`
-        .post {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+ 
+  const feedData = await prisma.post.findMany({
+    where: { published: true },
+    include: {
+      author: {
+        select: { name: true },
+      },
+    },
+    take: 5
+  })
 
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
+  const currentUser = {name: ''}
+  const currentSession = await getLoginSession(req)
 
-        .post + .post {
-          margin-top: 2rem;
-        }
-      `}</style>
-    </Layout>
-  )
+  if (currentSession) {
+    const user = await prisma.user.findFirst({
+      where: { id: currentSession.id }
+    })
+    if (user) {
+      currentUser.name = user.name
+    }
+  }
+
+  // const currentUser = getCurrentUser(req.headers?.cookie)
+
+  return { props: { feedData, currentUser } }
+
 }
 
-export default Blog
+const Page: React.FC<Props> = (props) => 
+  <Layout user={props.currentUser}>
+    <div className="page">
+      <h1 style={{textAlign: 'center', margin: '4rem 0 0'}}>Main Site Content</h1>
+      <main>
+        {props.feedData.map((post) => (
+          <div key={post.id} className="post">
+            <Post post={post} />
+          </div>
+        ))}
+      </main>
+    </div>
+  </Layout>
+
+export default Page
