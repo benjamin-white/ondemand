@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import styles       from './FormUserCreate.module.css'
 
-const FormCreate = () => {
+const FormUserCreate = () => {
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -38,13 +39,19 @@ const FormCreate = () => {
   }
 
   return (
-    <form onSubmit={submitFields}>
-      <label htmlFor="fc_name">Name</label>
-      <input type="text" id="fc_name" name="name" placeholder="*" onKeyUp={event => handleChange(event, setName)} />
-      <label htmlFor="fc_email">Email</label>
-      <input type="email" id="fc_email" name="email" placeholder="*" onKeyUp={event => handleChange(event, setEmail)} />
-      <label htmlFor="fc_pass">Password</label>
-      <input type="password" id="fc_pass" name="pass" placeholder="*" onKeyUp={event => handleChange(event, setPass)} />
+    <form onSubmit={submitFields} className={styles.form}>
+      <div className={styles.formRow}>
+        <label htmlFor="fc_name">Name</label>
+        <input type="text" id="fc_name" name="name" placeholder="*" onKeyUp={event => handleChange(event, setName)} />
+      </div>
+      <div className={styles.formRow}>
+        <label htmlFor="fc_email">Email</label>
+        <input type="email" id="fc_email" name="email" placeholder="*" onKeyUp={event => handleChange(event, setEmail)} />
+      </div>
+      <div className={styles.formRow}>
+        <label htmlFor="fc_pass">Password</label>
+        <input type="password" id="fc_pass" name="pass" placeholder="*" onKeyUp={event => handleChange(event, setPass)} />
+      </div>
       <input disabled={!name || !email} type="submit" value="Create" />
       { error && <div>{error}</div>}
     </form>
@@ -52,4 +59,4 @@ const FormCreate = () => {
 
 }
 
-export default FormCreate
+export default FormUserCreate

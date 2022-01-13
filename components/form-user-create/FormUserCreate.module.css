@@ -1,0 +1,28 @@
+.form {
+
+  margin: 4rem auto 0;
+  max-width: 66.666%;
+
+}
+
+.formRow {
+
+  display: flex;
+  margin: 0 0 2rem;
+  width: 100%;
+
+}
+
+.formRow label {
+
+  flex-basis: 8rem;
+  max-width: 8rem;
+  padding-right: 1rem;
+
+}
+
+.formRow input {
+
+  flex: 1;
+
+}

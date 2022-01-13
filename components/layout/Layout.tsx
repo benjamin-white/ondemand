@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import Header               from './Header'
+import SiteHeader           from '../site-header/SiteHeader'
 import styles               from './Layout.module.css'
 
 type User = {
@@ -13,7 +13,7 @@ type Props = {
 
 const Layout: React.FC<Props> = (props) => (
   <div>
-    <Header user={props.user} />
+    <SiteHeader user={props.user} />
     <div className={styles.layout}>{props.children}</div>
   </div>
 );

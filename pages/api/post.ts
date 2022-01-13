@@ -1,5 +1,4 @@
-// import nextConnect from 'next-connect'
-import prisma from '../../inc/prisma'
+import prisma                                   from '../../inc/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type ResponseData = {

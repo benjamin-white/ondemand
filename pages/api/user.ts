@@ -1,5 +1,5 @@
-import prisma from '../../inc/prisma'
-import crypto from 'crypto'
+import prisma                                   from '../../inc/prisma'
+import crypto                                   from 'crypto'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type ResponseData = {

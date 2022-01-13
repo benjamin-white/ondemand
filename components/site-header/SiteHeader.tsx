@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import Link                from 'next/link'
 import { useRouter }       from 'next/router'
-import FormLogin           from './account/FormLogin'
-import ButtonLogout        from './account/ButtonLogout'
-import styles              from './Header.module.css'
-// import { userInfo }        from 'os'
+import FormLogin           from '../form-user-login/FormLogin'
+import ButtonLogout        from '../button-logout/ButtonLogout'
+import styles              from './SiteHeader.module.css'
 
 type User = {
   name: string
@@ -14,7 +13,7 @@ type props = {
   user: User
 }
 
-const Header: React.FC<props> = ({ user }) => {
+const SiteHeader: React.FC<props> = ({ user }) => {
 
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
@@ -37,4 +36,4 @@ const Header: React.FC<props> = ({ user }) => {
   );
 };
 
-export default Header
+export default SiteHeader
