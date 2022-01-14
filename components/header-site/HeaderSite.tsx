@@ -3,23 +3,23 @@ import Link                from 'next/link'
 import { useRouter }       from 'next/router'
 import FormLogin           from '../form-user-login/FormLogin'
 import ButtonLogout        from '../button-logout/ButtonLogout'
-import styles              from './SiteHeader.module.css'
+import styles              from './HeaderSite.module.css'
 
 type User = {
   name: string
 }
 
 type props = {
-  user: User
+  user: User|null
 }
 
-const SiteHeader: React.FC<props> = ({ user }) => {
+const HeaderSite: React.FC<props> = ({ user }) => {
 
   const router = useRouter();
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname;
 
-  const [currentUser, setCurrentUser] = useState(user.name)
+  const [currentUser, setCurrentUser] = useState(user)
 
   return (
     <nav className={styles.header}>
@@ -31,9 +31,9 @@ const SiteHeader: React.FC<props> = ({ user }) => {
           <a data-active={isActive("/account")} className={isActive('/account') ? styles.disabled : ''}>Account</a>
         </Link>
       </div>
-      {!currentUser ? <FormLogin callback={setCurrentUser.bind(null, true)} /> : <p>{currentUser}, <ButtonLogout callback={setCurrentUser.bind(null, false)} /></p>}
+      {!currentUser ? <FormLogin callback={setCurrentUser.bind(null, true)} /> : <p>{currentUser.name}, <ButtonLogout callback={setCurrentUser.bind(null, false)} /></p>}
     </nav>
   );
 };
 
-export default SiteHeader
+export default HeaderSite

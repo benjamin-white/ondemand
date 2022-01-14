@@ -1,29 +1,37 @@
-import Iron from '@hapi/iron'
+import Iron                                        from '@hapi/iron'
 import { MAX_AGE, setTokenCookie, getTokenCookie } from './cookie'
+import type { NextApiRequest, NextApiResponse }    from 'next'
 
-const TOKEN_SECRET = 'process.env.TOKEN_SECRET_process.env.TOKEN_SECRET_process.env.TOKEN_SECRET'
+const TOKEN_SECRET = process.env.TOKEN_SECRET
 
-export async function setLoginSession(res, session) {
+export async function setLoginSession(response: NextApiResponse, session) {
+
   const createdAt = Date.now()
-  // Create a session object with a max age that we can validate later
-  const obj = { ...session, createdAt, maxAge: MAX_AGE }
-  const token = await Iron.seal(obj, TOKEN_SECRET, Iron.defaults)
+  const obj       = {...session, createdAt, maxAge: MAX_AGE}
+  const token     = await Iron.seal(obj, TOKEN_SECRET, Iron.defaults)
 
-  setTokenCookie(res, token)
+  setTokenCookie(response, token)
+
 }
 
-export async function getLoginSession(req) {
-  const token = getTokenCookie(req)
+type SessionType = {
+  id: number
+}
+
+export async function getLoginSession(request: NextApiRequest): Promise<SessionType|void> {
+
+  const token = getTokenCookie(request)
 
   if (!token) return
 
-  const session = await Iron.unseal(token, TOKEN_SECRET, Iron.defaults)
-  const expiresAt = session.createdAt + session.maxAge * 1000
-
-  // Validate the expiration date of the session
-  if (Date.now() > expiresAt) {
-    // throw new Error('Session expired')
+  try {
+    const session   = await Iron.unseal(token, TOKEN_SECRET, Iron.defaults)
+    const expiresAt = session.createdAt + session.maxAge
+    if (Date.now() > expiresAt) return
+    return session
+  } catch (error) {
+    console.error('Unable to retrieve session')
+    return
   }
 
-  return session
 }

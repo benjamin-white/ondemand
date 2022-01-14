@@ -1,30 +1,23 @@
-import { getLoginSession } from '../inc/session'
-import prisma              from '../inc/prisma'
+import { getLoginSession }     from '../inc/session'
+import prisma                  from '../inc/prisma'
 
-// type UserType = {}
+const getCurrentUser = async (request): Promise<object|null> => {
 
-const getCurrentUser = async (req) => { // return Promise?
-  
-  // const user = {}
+  const session = await getLoginSession(request)
 
-  const user = {name: ''}
-  const currentSession = await getLoginSession(req)
-
-  if (currentSession) {
-    const userSess = await prisma.user.findFirst({
-      where: { id: currentSession.id }
-    })
-    if (user) {
-      user.name = userSess.name
-    }
+  if (session) {
+    const user = await prisma.user.findFirst({where: {id: session.id}})
+    if (user) return {name: user.name}
   }
-  return user
 
-  // if (!cookieHeaders.length) return user
-
+  return null
 
 }
 
 export {
   getCurrentUser
+}
+
+export type UserType = {
+  name: string
 }

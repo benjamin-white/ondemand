@@ -1,43 +1,52 @@
-import { serialize, parse } from 'cookie'
+import { serialize, parse }                     from 'cookie'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-const TOKEN_NAME = 'cur_user'
+const TOKEN_NAME  = 'cur_user'
+const expiryHours = 48
 
-export const MAX_AGE = 60 * 60 * 8 // 8 hours
+export const MAX_AGE = 60 * 60 * expiryHours * 1000
 
-export function setTokenCookie(res, token) {
+export const setTokenCookie = (response: NextApiResponse, token: string) => {
+
   const cookie = serialize(TOKEN_NAME, token, {
     maxAge: MAX_AGE,
-    expires: new Date(Date.now() + MAX_AGE * 1000),
+    expires: new Date(Date.now() + MAX_AGE),
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     sameSite: 'lax',
   })
 
-  res.setHeader('Set-Cookie', cookie)
-  res.status(200).json({message: 'all good'})
+  response.setHeader('Set-Cookie', cookie)
+  response.status(200).json({message: 'ok'})
+
 }
 
-export function removeTokenCookie(res) {
+export function removeTokenCookie(response: NextApiResponse) {
+
   const cookie = serialize(TOKEN_NAME, '', {
     maxAge: -1,
     path: '/',
   })
 
-  res.setHeader('Set-Cookie', cookie)
-  res.status(200).json({message: 'all good'})
+  response.setHeader('Set-Cookie', cookie)
+  response.status(200).json({message: 'ok'})
+
 }
 
-export function parseCookies(req) {
+export function parseCookies(request: NextApiRequest) {
+
   // For API Routes we don't need to parse the cookies.
-  if (req.cookies) return req.cookies
+  if (request.cookies) return request.cookies
 
   // For pages we do need to parse the cookies.
-  const cookie = req.headers?.cookie
+  const cookie = request.headers?.cookie
+
   return parse(cookie || '')
+
 }
 
-export function getTokenCookie(req) {
-  const cookies = parseCookies(req)
+export const getTokenCookie = (request: NextApiRequest) => {
+  const cookies = parseCookies(request)
   return cookies[TOKEN_NAME]
 }

@@ -1,9 +1,9 @@
-import crypto from 'crypto'
-import prisma from '../../inc/prisma'
-import { setLoginSession, getLoginSession} from '../../inc/session'
+import crypto                                   from 'crypto'
+import prisma                                   from '../../inc/prisma'
+import { setLoginSession}                       from '../../inc/session'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-const login = async (req: NextApiRequest, res: NextApiResponse<ResponseData>) => {
+const login = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method !== 'POST') {
     res.status(404).end()
