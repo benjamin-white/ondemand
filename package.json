@@ -16,6 +16,8 @@
     "cookie": "^0.4.1",
     "next": "9.5.5",
     "next-connect": "^0.11.0",
+    "rarepress": "^0.1.7",
+    "rareterm": "0.0.9",
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "react-markdown": "5.0.2",

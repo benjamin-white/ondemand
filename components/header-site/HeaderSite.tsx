@@ -30,6 +30,9 @@ const HeaderSite: React.FC<props> = ({ user }) => {
         <Link href="/account">
           <a data-active={isActive("/account")} className={isActive('/account') ? styles.disabled : ''}>Account</a>
         </Link>
+        <Link href="/create">
+          <a data-active={isActive("/create")} className={isActive('/create') ? styles.disabled : ''}>Create</a>
+        </Link>
       </div>
       {!currentUser ? <FormLogin callback={setCurrentUser.bind(null, true)} /> : <p>{currentUser.name}, <ButtonLogout callback={setCurrentUser.bind(null, false)} /></p>}
     </nav>
